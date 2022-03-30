@@ -6,8 +6,8 @@ function getValue() {
         async: false,
         crossDomain:true,
         
-        success: function(respose){
-            console.log();
+        success: function(response){
+            console.log(response);
         }
     });
 }
