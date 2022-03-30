@@ -1,3 +1,4 @@
+function getValue() {
     const settings = {
         "async": true,
         "crossDomain": true,
@@ -11,4 +12,4 @@
     };
     $.ajax(settings).done(function (response) {
         console.log(response);
-    })
+    }
