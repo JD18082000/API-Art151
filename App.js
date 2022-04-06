@@ -16,5 +16,5 @@ function upadateDevices(event){
 }
 function success(midiAccess){
     console.log(midiAccess);
-    midiAccess.addEventListener('statechange',updateDevice);
+    midiAccess.addEventListener('statechange', upadateDevices);
 }
