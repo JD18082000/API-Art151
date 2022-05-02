@@ -1,0 +1,3 @@
+# API-Art151
+
+Description of the Project: By pressing the button of MIDI Launchpad, lightning will be animated in the canvas. With each different buttons being pressed, the lightning shape would be form randomly corresponding to the button that is being click. Unfortunately, I wasn't able to connect with the MIDI Launchpad due to lack of knowledge and health, but most of the element within the construction of the lightning shape is there.

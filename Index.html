@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <titlle>Launchpad Demo</titlle>
+  <meta http-equiv="X-UA-Compatible" content="ie-edge">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="App.js"></script>
+  <script src="API.js"></script>
+  <script src="Lightning.js"></script>
+  <script src="Vector.js"></script>
+  <script>
+    var canvas, target, ctx, lt, draw, points = [];
+    document.addEventListener("DOMContentLoaded", function () {
+        canvas = document.getElementById("MIDIAccess");
+        
+    
+        //canvas events   
+        canvas.addEventListener("mousedown", e => {
+            draw = true;
+            target = new Vector(0, 0, e.clientX - canvas.offsetLeft + document.documentElement.scrollLeft, e.clientY - canvas.offsetTop + document.documentElement.scrollTop);
+        }, false);
+
+        canvas.addEventListener("mouseup", e => {
+            draw = false;
+        }, false);
+
+        canvas.addEventListener('mousemove', e => {
+            if (draw) {
+                target = new Vector(0, 0, e.clientX - canvas.offsetLeft + document.documentElement.scrollLeft, e.clientY - canvas.offsetTop + document.documentElement.scrollTop);
+            }
+        });
+
+
+        canvas.addEventListener("touchstart", e => {
+            draw = true;
+            target = new Vector(0, 0, e.touches[0].clientX - canvas.offsetLeft + document.documentElement.scrollLeft, e.touches[0].clientY - canvas.offsetTop + document.documentElement.scrollTop);
+        }, false);
+
+        canvas.addEventListener("touchend", e => {
+            draw = false;
+        }, false);
+
+        canvas.addEventListener('touchmove', e => {
+            if (draw) {
+                target = new Vector(0, 0, e.touches[0].clientX - canvas.offsetLeft + document.documentElement.scrollLeft, e.touches[0].clientY - canvas.offsetTop + document.documentElement.scrollTop);
+            }
+        });
+
+
+        //Lighning sources            
+        points.push(new Vector(0, 0, canvas.width / 2, canvas.height / 2));
+        points.push(new Vector(0, 0, 20, 20));
+        points.push(new Vector(0, 0, canvas.width / 2, 20));
+        points.push(new Vector(0, 0, canvas.width - 20, 20));
+        points.push(new Vector(0, 0, 20, canvas.height - 20));
+        points.push(new Vector(0, 0, canvas.width / 2, canvas.height - 20));
+        points.push(new Vector(0, 0, canvas.width - 20, canvas.height - 20));
+
+        //control box events
+        var props = document.querySelectorAll("#controlBox input");
+        props.forEach(prp => {
+            prp.onchange = buidLighter;
+        })
+        buidLighter();
+        window.requestAnimationFrame(Animate);
+    });
+
+    function buidLighter() {
+        var opt = {};
+        var props = document.querySelectorAll("#controlBox input");
+        //Build lighning config
+        props.forEach(prp => {
+            var setter = prp.dataset.opt;
+            opt[setter] = prp.value;
+        })
+        lt = new Lightning(opt);
+    }
+    function setProp(config, prop) {
+        config[prop] = document.getElementById(prop).value;
+    }
+
+    function Animate() {
+        //Clear board
+        ctx.shadowBlur = 0;
+        ctx.shadowColor = null;
+        ctx.fillStyle = 'rgba(0,0,0,0.3)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        if (draw) {
+            points.forEach(p => {
+                lt.Cast(ctx, p, target);
+            });
+        }
+
+        setTimeout(() => {
+            this.Animate();
+        }, 60);
+    }
+</script>
+</head>
+
+</html>
+<script>
+        getValue();
+        window.addEventListener('load', () => {
+
+        const aeris = new AerisWeather('[CLIENT_ID]', '[CLIENT_SECRET]');
+
+        const request = aeris.api()
+			  .endpoint('lightning')
+			  .place('illinois, il')
+			  .format('json')
+			  .filter('cg')
+			  .limit(25)
+			  .fields('ob');
+        request.get().then((result) => {
+            console.log(result);
+        });
+    });
+    </script>
